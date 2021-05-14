@@ -4,6 +4,7 @@
 namespace App\Http\Requests;
 
 
+use App\Constants\AppConstant;
 use App\Utils\DataTypeUtil;
 use App\Utils\ResponseUtil;
 use Illuminate\Contracts\Validation\Validator;
@@ -71,5 +72,40 @@ class BaseRequest extends FormRequest {
      */
     public function getInputAsArray(string $key): array {
         return DataTypeUtil::toArray($this->input($key));
+    }
+
+    /**
+     * Transform input value to url.
+     * @param string $key
+     * @return string
+     */
+    public function getInputAsUrl(string $key): string {
+        return urldecode($this->getInputAsString($key));
+    }
+
+    /**
+     * For pagination. Get the requested page number.
+     * @return int
+     */
+    public function getPage(): int {
+        return $this->getInputAsInt('page') ?: AppConstant::DEFAULT_PAGE;
+    }
+
+    /**
+     * For pagination. Get the requested page limit.
+     * @return int
+     */
+    public function getPageLimit(): int {
+        $limit = $this->getInputAsInt('limit') ?: AppConstant::DEFAULT_PAGE_LIMIT;
+        return $limit > AppConstant::MAX_PAGE_LIMIT ? AppConstant::DEFAULT_PAGE_LIMIT : $limit;
+    }
+
+    /**
+     * For pagination. Get the requested page offset.
+     * @return int
+     */
+    public function getPageOffset(): int {
+        $offset = $this->getInputAsInt('offset');
+        return $offset ?: ($this->getPage() - 1) * $this->getPageLimit();
     }
 }

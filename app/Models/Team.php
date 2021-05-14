@@ -46,6 +46,14 @@ class Team extends Model {
     }
 
     /**
+     * Checks if the object is not empty.
+     * @return bool
+     */
+    public function isNotEmpty(): bool {
+        return !empty($this->id);
+    }
+
+    /**
      * Get the entity id.
      * @return int
      */

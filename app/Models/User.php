@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+
     use HasFactory, Notifiable;
 
     /**
@@ -19,7 +19,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
@@ -29,15 +29,39 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+    protected $dates = [
+        'email_verified_at'
     ];
+
+    /**
+     * Checks if the object is empty.
+     * @return bool
+     */
+    public function isEmpty(): bool {
+        return empty($this->id);
+    }
+
+    /**
+     * Checks if the object is not empty.
+     * @return bool
+     */
+    public function isNotEmpty(): bool {
+        return !empty($this->id);
+    }
+
+    /**
+     * Get the entity id.
+     * @return int
+     */
+    public function getId(): int {
+        return (int) $this->id;
+    }
 }

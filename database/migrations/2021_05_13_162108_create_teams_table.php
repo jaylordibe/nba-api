@@ -21,7 +21,7 @@ class CreateTeamsTable extends Migration {
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->dateTime('deleted_at')->nullable();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('conference');
             $table->string('division');
         });

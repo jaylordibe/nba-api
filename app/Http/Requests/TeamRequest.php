@@ -12,7 +12,7 @@ class TeamRequest extends BaseRequest {
      */
     public function rules() {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:teams',
             'conference' => 'required',
             'division' => 'required'
         ];
