@@ -50,7 +50,7 @@ class TeamRepositoryImplementation implements TeamRepository {
         }
 
         if (!empty($division)) {
-            $teams->where('conference', $conference);
+            $teams->where('division', $division);
         }
 
         if (!empty($search)) {
