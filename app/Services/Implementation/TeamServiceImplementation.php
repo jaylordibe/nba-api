@@ -4,6 +4,8 @@
 namespace App\Services\Implementation;
 
 
+use App\Constants\ConferenceConstant;
+use App\Constants\DivisionConstant;
 use App\Constants\StatusConstant;
 use App\Http\Requests\Request;
 use App\Http\Requests\TeamRequest;
@@ -53,6 +55,12 @@ class TeamServiceImplementation implements TeamService {
      */
     public function create(TeamRequest $request): Team {
         $name = $request->getInputAsString('name');
+        $conference = ConferenceConstant::fromString($request->getInputAsString('conference'));
+        $division = DivisionConstant::getValidDivision($conference, $request->getInputAsString('division'));
+
+        if (empty($conference) || empty($division)) {
+            return new Team();
+        }
 
         $team = $this->findByName($name);
 
@@ -62,8 +70,8 @@ class TeamServiceImplementation implements TeamService {
 
         $team = new Team();
         $team->name = $name;
-        $team->conference = $request->getInputAsString('conference');
-        $team->division = $request->getInputAsString('division');
+        $team->conference = $conference;
+        $team->division = $division;
         $team->save();
 
         return $team;
@@ -73,6 +81,13 @@ class TeamServiceImplementation implements TeamService {
      * @inheritDoc
      */
     public function update(int $teamId, TeamRequest $request): Team {
+        $conference = ConferenceConstant::fromString($request->getInputAsString('conference'));
+        $division = DivisionConstant::getValidDivision($conference, $request->getInputAsString('division'));
+
+        if (empty($conference) || empty($division)) {
+            return new Team();
+        }
+
         $team = $this->findById($teamId);
 
         if ($team->isEmpty()) {
@@ -92,8 +107,8 @@ class TeamServiceImplementation implements TeamService {
             $team->name = $newTeamName;
         }
 
-        $team->conference = $request->getInputAsString('conference');
-        $team->division = $request->getInputAsString('division');
+        $team->conference = $conference;
+        $team->division = $division;
         $team->save();
 
         return $team;

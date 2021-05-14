@@ -9,6 +9,7 @@ use App\Http\Requests\TeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Http\Resources\TeamsResource;
 use App\Services\TeamService;
+use App\Utils\DataTypeUtil;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -57,24 +58,30 @@ class TeamController extends Controller {
 
     /**
      * Get team by id.
-     * @param int $teamId - the team id of the team to be fetched
+     * @param $teamId - the team id of the team to be fetched
      * @param Request $request
-     * @return TeamResource
+     * @return TeamResource|JsonResponse
      */
-    public function getById(int $teamId, Request $request) {
+    public function getById($teamId, Request $request) {
+        $teamId = DataTypeUtil::toInt($teamId);
         $team = $this->teamService->findById($teamId);
+
+        if ($team->isEmpty()) {
+            return ResponseUtil::error('Team not found.');
+        }
 
         return new TeamResource($team);
     }
 
     /**
      * Update team info.
-     * @param int $teamId - the team id of the team to be updated
+     * @param $teamId - the team id of the team to be updated
      * @param TeamRequest $request
      * @return TeamResource|JsonResponse
      */
-    public function update(int $teamId, TeamRequest $request) {
+    public function update($teamId, TeamRequest $request) {
         $request->validated();
+        $teamId = DataTypeUtil::toInt($teamId);
         $team = $this->teamService->update($teamId, $request);
 
         if ($team->isEmpty()) {
@@ -86,14 +93,15 @@ class TeamController extends Controller {
 
     /**
      * Delete team.
-     * @param int $teamId - the team id of the team to be deleted
+     * @param $teamId - the team id of the team to be deleted
      * @param Request $request
      * @return JsonResponse
      */
-    public function delete(int $teamId, Request $request) {
+    public function delete($teamId, Request $request) {
+        $teamId = DataTypeUtil::toInt($teamId);
         $isDeleted = $this->teamService->delete($teamId, $request);
 
-        if ($isDeleted) {
+        if (!$isDeleted) {
             return ResponseUtil::error('Failed to delete the team.');
         }
 
