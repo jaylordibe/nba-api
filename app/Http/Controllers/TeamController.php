@@ -85,7 +85,7 @@ class TeamController extends Controller {
         $team = $this->teamService->update($teamId, $request);
 
         if ($team->isEmpty()) {
-            return ResponseUtil::error('Failed to update the team info.');
+            return ResponseUtil::error('Failed to update the team info. Team name is already taken.');
         }
 
         return new TeamResource($team);
