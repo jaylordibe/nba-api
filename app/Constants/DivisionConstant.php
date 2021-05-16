@@ -51,10 +51,10 @@ class DivisionConstant {
         $divisions = [];
 
         switch ($conference) {
-            case ConferenceConstant::EASTERN_CONFERENCE:
+            case ConferenceConstant::EAST:
                 $divisions = [self::ATLANTIC, self::CENTRAL, self::SOUTHEAST];
                 break;
-            case ConferenceConstant::WESTERN_CONFERENCE:
+            case ConferenceConstant::WEST:
                 $divisions = [self::NORTHWEST, self::PACIFIC, self::SOUTHWEST];
                 break;
             default:

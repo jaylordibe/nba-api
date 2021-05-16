@@ -12,6 +12,7 @@ use App\Http\Requests\TeamRequest;
 use App\Models\Team;
 use App\Repositories\TeamRepository;
 use App\Services\TeamService;
+use App\Utils\AppUtil;
 use App\Utils\DataTypeUtil;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -128,6 +129,7 @@ class TeamServiceImplementation implements TeamService {
 
         try {
             $isDeleted = DataTypeUtil::toBoolean($team->delete());
+            $team->name = AppUtil::generateDeletedDBItemValue($team->name);
             $team->status = StatusConstant::DELETED;
             $team->save();
         } catch (Exception $e) {

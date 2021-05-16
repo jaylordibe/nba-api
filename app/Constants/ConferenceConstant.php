@@ -9,8 +9,8 @@ use ReflectionException;
 
 class ConferenceConstant {
 
-    const EASTERN_CONFERENCE = 'Eastern Conference';
-    const WESTERN_CONFERENCE = 'Western Conference';
+    const EAST = 'East';
+    const WEST = 'West';
 
     /**
      * Get conference constant from string.
