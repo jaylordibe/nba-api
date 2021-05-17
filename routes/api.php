@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+# Public Routes
+Route::post('teams', [TeamController::class, 'create']);
+Route::get('teams', [TeamController::class, 'getAll']);
+Route::get('teams/{teamId}', [TeamController::class, 'getById']);
+Route::put('teams/{teamId}', [TeamController::class, 'update']);
+Route::delete('teams/{teamId}', [TeamController::class, 'delete']);
+
+Route::middleware('auth:api')->group(function () {
+    // TODO: Add your authenticated routes here...
 });
